@@ -228,7 +228,7 @@ function showDialogue() {
   const dialogueText = document.getElementById('dialogue-text');
   const nextDialogueButton = document.getElementById('next-dialogue');
 
-  dialogueBox.style.display = 'block';
+  dialogueBox.style.display = 'flex';
   dialogueText.textContent = dialogues[currentDialogueIndex];
   nextDialogueButton.style.display = 'block';
 
@@ -536,10 +536,10 @@ const musicButton = document.getElementById('toggle-music');
 musicButton.addEventListener('click', () => {
     if (backgroundMusic.paused) {
         backgroundMusic.play();
-        musicButton.textContent = 'Musique de fond : On';
+        musicButton.textContent = 'Musique de fond : on';
     } else {
         backgroundMusic.pause();
-        musicButton.textContent = 'Musique de fond : Off';
+        musicButton.textContent = 'Musique de fond : off';
     }
 });
 
@@ -568,7 +568,7 @@ function startSpaceshipMode() {
   loadingScreen.style.justifyContent = 'center';
   loadingScreen.style.alignItems = 'center';
   loadingScreen.style.fontSize = '2em';
-  loadingScreen.textContent = 'Initialisation du vaisseau...';
+  loadingScreen.textContent = 'initialisation du vaisseau...';
   document.body.appendChild(loadingScreen);
 
   setTimeout(() => {
