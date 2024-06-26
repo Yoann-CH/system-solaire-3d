@@ -172,7 +172,7 @@ celestialBodies.push(sun); // Ajouter le Soleil aux objets cliquables
 
 // Ajout de l'Étoile de la Mort
 const deathStarLoader = new GLTFLoader();
-deathStarLoader.load('/models/death_star_-_star_wars.glb', function(gltf) {
+deathStarLoader.load('/models/etoile_de_la_mort.glb', function(gltf) {
     const deathStar = gltf.scene;
     deathStar.scale.set(2, 2, 2); // Réduire l'échelle si nécessaire
     deathStar.position.set(100, 100, 100); // Position éloignée du système solaire
