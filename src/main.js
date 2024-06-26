@@ -188,7 +188,7 @@ celestialBodies.push(sun); // Ajouter le Soleil aux objets cliquables
 
 // Ajout de l'Étoile de la Mort
 const deathStarLoader = new GLTFLoader();
-deathStarLoader.load('/src/assets/models/death_star_-_star_wars.glb', function(gltf) {
+deathStarLoader.load('/models/death_star_-_star_wars.glb', function(gltf) {
     const deathStar = gltf.scene;
     deathStar.scale.set(2, 2, 2); // Réduire l'échelle si nécessaire
     deathStar.position.set(100, 100, 100); // Position éloignée du système solaire
@@ -207,7 +207,7 @@ const keys = {};
 
 // Charger le modèle du vaisseau spatial
 const spaceshipLoader = new GLTFLoader();
-spaceshipLoader.load('/src/assets/models/spaceship.glb', function(gltf) {
+spaceshipLoader.load('/models/spaceship.glb', function(gltf) {
     spaceship = gltf.scene;
     spaceship.scale.set(0.01, 0.01, 0.01); // Ajuster l'échelle
     spaceship.position.set(0, 100, 0); // Positionner le vaisseau spatial
