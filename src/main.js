@@ -29,6 +29,7 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 let selectedObject = null;
 let spaceshipView = false;
+let deathStarClicked = false;
 
 // Chargement des textures
 const textureLoader = new THREE.TextureLoader();
@@ -74,28 +75,6 @@ scene.add(sun);
 const pointLight = new THREE.PointLight(0xffffff, 2, 3000);
 pointLight.position.set(0, 0, 0);
 scene.add(pointLight);
-
-// Création des étoiles lumineuses
-const stars = [];
-function createStar() {
-    const starGeometry = new THREE.SphereGeometry(0.5, 16, 16);
-    const starMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const star = new THREE.Mesh(starGeometry, starMaterial);
-    const starLight = new THREE.PointLight(0xffffff, 1, 100);
-    star.add(starLight);
-    star.position.set(
-        (Math.random() - 0.5) * 2000,
-        (Math.random() - 0.5) * 2000,
-        (Math.random() - 0.5) * 2000
-    );
-    scene.add(star);
-    stars.push(star);
-}
-
-// Ajouter plusieurs étoiles lumineuses à la scène
-for (let i = 0; i < 30; i++) {
-    createStar();
-}
 
 // Données des planètes (rayon en km et distance moyenne au Soleil en km)
 const planetData = [
@@ -158,12 +137,23 @@ planetData.forEach(data => {
 const starsGeometry = new THREE.BufferGeometry();
 const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff });
 const starVertices = [];
-for (let i = 0; i < 5000; i++) {
-    const x = THREE.MathUtils.randFloatSpread(2000);
-    const y = THREE.MathUtils.randFloatSpread(2000);
-    const z = THREE.MathUtils.randFloatSpread(2000);
+const minDistance = 1000; // Distance minimale du soleil
+const maxDistance = 5000; // Distance maximale des étoiles
+
+for (let i = 0; i < 10000; i++) {
+    let x, y, z, distance;
+
+    // Générer des positions jusqu'à ce que la distance soit supérieure à minDistance
+    do {
+        x = THREE.MathUtils.randFloatSpread(maxDistance);
+        y = THREE.MathUtils.randFloatSpread(maxDistance);
+        z = THREE.MathUtils.randFloatSpread(maxDistance);
+        distance = Math.sqrt(x * x + y * y + z * z);
+    } while (distance < minDistance);
+
     starVertices.push(x, y, z);
 }
+
 starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
 const starPoints = new THREE.Points(starsGeometry, starsMaterial);
 scene.add(starPoints);
@@ -176,9 +166,17 @@ deathStarLoader.load('/models/etoile_de_la_mort.glb', function(gltf) {
     const deathStar = gltf.scene;
     deathStar.scale.set(2, 2, 2); // Réduire l'échelle si nécessaire
     deathStar.position.set(100, 100, 100); // Position éloignée du système solaire
-    deathStar.userData = { name: "Étoile de la Mort", description: "L'Étoile de la Mort est une station spatiale fictive de l'univers de Star Wars." };
+    const userData = { name: "Étoile de la Mort", description: "L'Étoile de la Mort est une station spatiale fictive de l'univers de Star Wars." };
+
+    // Ajoutez userData à tous les enfants de deathStar
+    deathStar.traverse(function(child) {
+        if (child.isMesh) {
+            child.userData = userData;
+            celestialBodies.push(child);
+        }
+    });
+
     scene.add(deathStar);
-    celestialBodies.push(deathStar);
 });
 
 // Variables pour le vaisseau spatial
@@ -215,35 +213,155 @@ window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Gestion des clics
+// Variables pour le dialogue
+const dialogues = [
+  "Je suis ton père.",
+  "Rejoins-moi, et ensemble nous pourrons régner sur la galaxie.",
+  "Tu ne connais pas la puissance du côté obscur !"
+];
+
+let currentDialogueIndex = 0;
+
+// Function to show dialogue
+function showDialogue() {
+  const dialogueBox = document.getElementById('dialogue');
+  const dialogueText = document.getElementById('dialogue-text');
+  const nextDialogueButton = document.getElementById('next-dialogue');
+
+  dialogueBox.style.display = 'block';
+  dialogueText.textContent = dialogues[currentDialogueIndex];
+  nextDialogueButton.style.display = 'block';
+
+  // Ajout de l'écouteur pour le bouton "Entrer"
+  document.addEventListener('keydown', handleKeyDown);
+}
+
+function handleKeyDown(event) {
+  if (event.key === 'Enter') {
+      nextDialogue();
+  }
+}
+
+// Function to proceed to the next dialogue
+function nextDialogue() {
+  currentDialogueIndex++;
+  if (currentDialogueIndex < dialogues.length) {
+      document.getElementById('dialogue-text').textContent = dialogues[currentDialogueIndex];
+  } else {
+      // End of dialogue
+      document.getElementById('dialogue').style.display = 'none';
+      const darthVaderMusic = document.getElementById('darth-vader-music');
+      darthVaderMusic.pause();
+      darthVaderMusic.currentTime = 0; // Reset playback position
+
+      // Show Vader's ship and start its behavior
+      loadVaderShip();
+
+      // Remove the event listener for the "Enter" key
+      document.removeEventListener('keydown', handleKeyDown);
+  }
+}
+
+// Function to load Vader's ship
+function loadVaderShip() {
+    const vaderShipLoader = new GLTFLoader();
+    vaderShipLoader.load('/models/dark_vador.glb', function(gltf) {
+        const vaderShip = gltf.scene;
+        vaderShip.scale.set(0.0005, 0.0005, 0.0005); // Adjust scale
+        vaderShip.position.set(50, 50, 50); // Initial position
+        scene.add(vaderShip);
+
+        // Implement following and shooting behavior
+        animateVaderShip(vaderShip);
+    });
+}
+
+function animateVaderShip(vaderShip) {
+  const followSpeed = 0.05;
+  const laserSpeed = 5;
+
+  function shootLaser() {
+      const laserGeometry = new THREE.CylinderGeometry(0.1, 0.1, 5, 32);
+      const laserMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); // Vert fluo
+      const laser = new THREE.Mesh(laserGeometry, laserMaterial);
+      laser.rotation.x = Math.PI / 2;
+      laser.position.copy(vaderShip.position);
+      scene.add(laser);
+
+      // Animate the laser
+      new TWEEN.Tween(laser.position)
+          .to({ z: laser.position.z - 1000 }, laserSpeed)
+          .onComplete(() => scene.remove(laser))
+          .start();
+  }
+
+  function update() {
+      if (spaceship) {
+          // Follow the player's ship
+          const direction = spaceship.position.clone().sub(vaderShip.position).normalize();
+          vaderShip.position.add(direction.multiplyScalar(followSpeed));
+
+          // Look at the player's ship
+          vaderShip.lookAt(spaceship.position);
+      }
+
+      requestAnimationFrame(update);
+  }
+
+  // Set interval for shooting lasers regularly
+  setInterval(shootLaser, 1000); // Adjust the interval time as needed (1000 ms = 1 second)
+
+  update();
+}
+
+// Function to handle mouse click and initialize the spaceship mode
 function onMouseClick(event) {
-    event.preventDefault();
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(celestialBodies, true);
-    if (intersects.length > 0) {
-        selectedObject = intersects[0].object;
-        controls.enabled = false; // Désactive les contrôles d'orbite pendant l'animation
+  if (!spaceshipView) return; // Autoriser le clic uniquement en mode vaisseau
 
-        new TWEEN.Tween(camera.position)
-            .to({
-                x: selectedObject.position.x + 20,
-                y: selectedObject.position.y + 20,
-                z: selectedObject.position.z + 20
-            }, 2000) // Durée de l'animation en millisecondes
-            .easing(TWEEN.Easing.Quadratic.InOut)
-            .onUpdate(() => {
-                camera.lookAt(selectedObject.position);
-            })
-            .onComplete(() => {
-                controls.target.copy(selectedObject.position);
-                controls.enabled = true; // Réactive les contrôles d'orbite après l'animation
-            })
-            .start();
+  event.preventDefault();
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(celestialBodies, true);
+  if (intersects.length > 0) {
+      selectedObject = intersects[0].object;
+      if (selectedObject.userData.name === "Étoile de la Mort" && deathStarClicked) {
+          return; // Interdire de recliquer sur l'étoile noire
+      }
+      controls.enabled = false; // Désactiver les contrôles d'orbite pendant l'animation
 
-        displayInfo(selectedObject.userData);
-    }
+      const targetPosition = new THREE.Vector3();
+      selectedObject.getWorldPosition(targetPosition);
+
+      const direction = new THREE.Vector3();
+      direction.subVectors(camera.position, targetPosition).normalize();
+      const oppositePosition = new THREE.Vector3();
+      oppositePosition.addVectors(targetPosition, direction.multiplyScalar(40));
+
+      new TWEEN.Tween(camera.position)
+          .to({
+              x: oppositePosition.x,
+              y: oppositePosition.y,
+              z: oppositePosition.z
+          }, 2000)
+          .easing(TWEEN.Easing.Quadratic.InOut)
+          .onUpdate(() => {
+              camera.lookAt(targetPosition);
+          })
+          .onComplete(() => {
+              controls.target.copy(targetPosition);
+              controls.enabled = true;
+              if (selectedObject.userData.name === "Étoile de la Mort") {
+                  deathStarClicked = true;
+                  const darthVaderMusic = document.getElementById('darth-vader-music');
+                  darthVaderMusic.play();
+                  showDialogue();
+              } else {
+                  displayInfo(selectedObject.userData);
+              }
+          })
+          .start();
+  }
 }
 window.addEventListener('click', onMouseClick, false);
 
@@ -258,6 +376,11 @@ function displayInfo(data) {
 // Fermer les informations de l'objet
 document.getElementById('close-info').addEventListener('click', () => {
     document.getElementById('info').style.display = 'none';
+    if (selectedObject && selectedObject.userData.name === "Étoile de la Mort") {
+        const darthVaderMusic = document.getElementById('darth-vader-music');
+        darthVaderMusic.pause();
+        darthVaderMusic.currentTime = 0; // Réinitialiser la position de lecture
+    }
 });
 
 function onMouseMove(event) {
@@ -276,88 +399,90 @@ function onMouseMove(event) {
 let animationSpeed = 0.0000000000001; // Vitesse d'animation initiale
 
 function animate() {
-    requestAnimationFrame(animate);
-    const time = Date.now() * animationSpeed; // Utilisation de la vitesse d'animation
-    celestialBodies.forEach(body => {
-        if (!spaceshipView && body.userData.period) { // Désactiver les animations planétaires en mode vaisseau spatial
-            const angularSpeed = (2 * Math.PI) / body.userData.period;
-            body.userData.angle += angularSpeed * time;
-            body.position.x = Math.cos(body.userData.angle) * body.userData.distance;
-            body.position.z = Math.sin(body.userData.angle) * body.userData.distance;
+  requestAnimationFrame(animate);
+  const time = Date.now() * animationSpeed; // Utilisation de la vitesse d'animation
+  celestialBodies.forEach(body => {
+      if (!spaceshipView && body.userData.period) { // Désactiver les animations planétaires en mode vaisseau spatial
+          const angularSpeed = (2 * Math.PI) / body.userData.period;
+          body.userData.angle += angularSpeed * time;
+          body.position.x = Math.cos(body.userData.angle) * body.userData.distance;
+          body.position.z = Math.sin(body.userData.angle) * body.userData.distance;
 
-            // Rotation des planètes
-            body.rotation.y += body.userData.rotationSpeed;
+          // Rotation des planètes
+          body.rotation.y += body.userData.rotationSpeed;
 
-            // Animation des lunes
-            if (body.userData.moons) {
-                body.userData.moons.forEach(moon => {
-                    const moonSpeed = (2 * Math.PI) / moon.userData.period;
-                    moon.userData.angle += moonSpeed * time;
-                    moon.position.x = Math.cos(moon.userData.angle) * moon.userData.distance;
-                    moon.position.z = Math.sin(moon.userData.angle) * moon.userData.distance;
+          // Animation des lunes
+          if (body.userData.moons) {
+              body.userData.moons.forEach(moon => {
+                  const moonSpeed = (2 * Math.PI) / moon.userData.period;
+                  moon.userData.angle += moonSpeed * time;
+                  moon.position.x = Math.cos(moon.userData.angle) * moon.userData.distance;
+                  moon.position.z = Math.sin(moon.userData.angle) * moon.userData.distance;
 
-                    // Rotation des lunes
-                    moon.rotation.y += moon.userData.rotationSpeed;
-                });
-            }
-        }
-    });
+                  // Rotation des lunes
+                  moon.rotation.y += moon.userData.rotationSpeed;
+              });
+          }
+      }
+  });
 
-    if (spaceshipView) {
-        updateSpaceship();
-        if (spaceship) {
-            const pointer = document.getElementById('pointer');
-            pointer.style.display = 'block';
-            const relativeCameraOffset = new THREE.Vector3(0, 2, -20); // Ajusté pour être juste derrière et légèrement au-dessus du vaisseau
-            const cameraOffset = relativeCameraOffset.applyMatrix4(spaceship.matrixWorld);
-            camera.position.copy(cameraOffset);
-            camera.lookAt(spaceship.position);
-        }
-        controls.enabled = false;
-    } else {
-        controls.update();
-        controls.enabled = true;
-        const pointer = document.getElementById('pointer');
-        pointer.style.display = 'none';
-    }
+  if (spaceshipView) {
+      updateSpaceship();
+      if (spaceship) {
+          const pointer = document.getElementById('pointer');
+          pointer.style.display = 'block';
+          const relativeCameraOffset = new THREE.Vector3(0, 2, -20); // Ajusté pour être juste derrière et légèrement au-dessus du vaisseau
+          const cameraOffset = relativeCameraOffset.applyMatrix4(spaceship.matrixWorld);
+          camera.position.copy(cameraOffset);
+          camera.lookAt(spaceship.position);
+      }
+      controls.enabled = false;
+  } else {
+      controls.update();
+      controls.enabled = true;
+      const pointer = document.getElementById('pointer');
+      pointer.style.display = 'none';
+      document.getElementById('controls').style.display = 'block'; // Afficher le panneau de configuration
+      toggleOrbitsVisibility(true); // Afficher les lignes des orbites
+  }
 
-    if (selectedObject) {
-        controls.target.copy(selectedObject.position);
-    }
-    TWEEN.update();
-    renderer.render(scene, camera);
+  if (selectedObject) {
+      controls.target.copy(selectedObject.position);
+  }
+  TWEEN.update();
+  renderer.render(scene, camera);
 
-    // Mise à jour du vaisseau spatial
-    if (spaceship) {
-        if (keys['w'] || keys['ArrowUp']) {
-            velocity.add(new THREE.Vector3(0, 0, -acceleration).applyQuaternion(spaceship.quaternion));
-        }
-        if (keys['s'] || keys['ArrowDown']) {
-            velocity.add(new THREE.Vector3(0, 0, acceleration).applyQuaternion(spaceship.quaternion));
-        }
-        if (keys['a'] || keys['ArrowLeft']) {
-            spaceship.rotateY(acceleration);
-        }
-        if (keys['d'] || keys['ArrowRight']) {
-            spaceship.rotateY(-acceleration);
-        }
-        if (keys['q']) {
-            spaceship.rotateZ(acceleration);
-        }
-        if (keys['e']) {
-            spaceship.rotateZ(-acceleration);
-        }
+  // Mise à jour du vaisseau spatial
+  if (spaceship) {
+      if (keys['w'] || keys['ArrowUp']) {
+          velocity.add(new THREE.Vector3(0, 0, -acceleration).applyQuaternion(spaceship.quaternion));
+      }
+      if (keys['s'] || keys['ArrowDown']) {
+          velocity.add(new THREE.Vector3(0, 0, acceleration).applyQuaternion(spaceship.quaternion));
+      }
+      if (keys['a'] || keys['ArrowLeft']) {
+          spaceship.rotateY(acceleration);
+      }
+      if (keys['d'] || keys['ArrowRight']) {
+          spaceship.rotateY(-acceleration);
+      }
+      if (keys['q']) {
+          spaceship.rotateZ(acceleration);
+      }
+      if (keys['e']) {
+          spaceship.rotateZ(-acceleration);
+      }
 
-        // Limiter la vitesse maximale
-        if (velocity.length() > maxSpeed) {
-            velocity.setLength(maxSpeed);
-        }
+      // Limiter la vitesse maximale
+      if (velocity.length() > maxSpeed) {
+          velocity.setLength(maxSpeed);
+      }
 
-        spaceship.position.add(velocity);
+      spaceship.position.add(velocity);
 
-        // Appliquer la décélération
-        velocity.multiplyScalar(1 - deceleration);
-    }
+      // Appliquer la décélération
+      velocity.multiplyScalar(1 - deceleration);
+  }
 }
 
 animate();
@@ -421,22 +546,42 @@ muteButton.addEventListener('click', () => {
     muteButton.textContent = backgroundMusic.muted ? 'Activer le son' : 'Couper le son';
 });
 
-const toggleViewButton = document.getElementById('toggleView');
-toggleViewButton.addEventListener('click', () => {
-    spaceshipView = !spaceshipView;
-    if (spaceshipView) {
-        toggleViewButton.textContent = "Switch to Orbit View";
-        const pointer = document.getElementById('pointer');
-        pointer.style.display = 'block';
-        if (!userInteracted) {
-            alert("Please click anywhere on the screen to enable background music.");
-        }
-    } else {
-        toggleViewButton.textContent = "Switch to Spaceship View";
-        const pointer = document.getElementById('pointer');
-        pointer.style.display = 'none';
-    }
+document.getElementById('launch-space').addEventListener('click', () => {
+  startSpaceshipMode();
 });
+
+function startSpaceshipMode() {
+  // Animation d'initialisation du vaisseau
+  const loadingScreen = document.createElement('div');
+  loadingScreen.id = 'loading-screen';
+  loadingScreen.style.position = 'absolute';
+  loadingScreen.style.top = 0;
+  loadingScreen.style.left = 0;
+  loadingScreen.style.width = '100%';
+  loadingScreen.style.height = '100%';
+  loadingScreen.style.backgroundColor = 'black';
+  loadingScreen.style.color = 'white';
+  loadingScreen.style.display = 'flex';
+  loadingScreen.style.justifyContent = 'center';
+  loadingScreen.style.alignItems = 'center';
+  loadingScreen.style.fontSize = '2em';
+  loadingScreen.textContent = 'Initialisation du vaisseau...';
+  document.body.appendChild(loadingScreen);
+
+  setTimeout(() => {
+      loadingScreen.style.display = 'none';
+      spaceshipView = true;
+      document.getElementById('pointer').style.display = 'block';
+      document.getElementById('controls').style.display = 'none'; // Masquer le panneau de configuration
+      toggleOrbitsVisibility(false); // Masquer les lignes des orbites
+  }, 3000); // Durée de l'animation de transition (3 secondes)
+}
+
+function toggleOrbitsVisibility(visible) {
+  orbits.forEach(orbit => {
+      orbit.visible = visible;
+  });
+}
 
 function updateSpaceship() {
     const rotationSpeed = 0.02;

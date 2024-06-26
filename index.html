@@ -20,15 +20,21 @@
     <button id="toggle-music">Musique de fond : On</button>
     <button id="mute-music">Couper le son</button>
     <button id="toggle-lines">Afficher/Masquer les lignes</button>
+    <div style="border: white 1px solid;border-radius: 50%;width: min-content;">
+      <button id="launch-space"></button>
+    </div>
 </div>
-<div id="ui">
-    <button id="toggleView">Switch to Spaceship View</button>
+<div id="dialogue" style="display:none;">
+  <img id="vader-image" src="src/assets/images/dark_vador.png" alt="Darth Vader">
+  <div id="dialogue-text"></div>
+  <button id="next-dialogue" style="display:none;">Entrer</button>
 </div>
 <img id="pointer" src="/src/assets/images/pointeur.png" alt="pointer">
 <audio id="background-music" loop>
     <source src="/src/assets/music/Space_music.mp3" type="audio/mp3">
     Your browser does not support the audio element.
 </audio>
+<audio id="darth-vader-music" src="src/assets/music/dark_vador.mp3" preload="auto"></audio>
 <script type="module" src="/src/main.js"></script>
 </body>
 </html>

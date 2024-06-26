@@ -25,34 +25,84 @@ canvas { display: block; }
 #controls {
     position: absolute;
     top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.8);
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
     color: white;
-    padding: 10px;
-    border-radius: 5px;
+    font-family: 'Arial', sans-serif;
+    width: 300px;
 }
-#controls input[type="range"] {
-    width: 100%;
+
+#controls label, #controls button {
+    display: block;
+    margin: 10px 0;
 }
-#controls button {
-    background: #444;
-    color: white;
+
+#launch-space {
+    background-image: url('/src/assets/images/vaisseau.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    height: 100px;
+    width: 100px;
     border: none;
-    padding: 5px 10px;
     cursor: pointer;
-    margin-top: 5px;
+    margin-top: 20px;
 }
+
 #ui {
     position: absolute;
     top: 10px;
-    left: 10px;
-    z-index: 100;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 10px;
     color: white;
+    font-family: 'Arial', sans-serif;
 }
+
 #pointer {
     position: absolute;
-    width: 50px;
-    height: 50px;
-    pointer-events: none;
-    z-index: 1000;
+    display: none;
+    width: 30px;
+    height: 30px;
+}
+
+#audio-controls {
+    display: none;
+}
+
+#dialogue {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 2000; /* Ensure it appears above other elements */
+    width: 500px; /* Increase the width */
+}
+
+#dialogue img {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+#dialogue-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+#next-dialogue {
+    background: #444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
 }
