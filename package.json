@@ -1,0 +1,18 @@
+{
+  "name": "system-solaire-3d",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.3.1"
+  },
+  "dependencies": {
+    "three": "^0.137.5",
+    "@tweenjs/tween.js": "^18.6.4"
+  }
+}
