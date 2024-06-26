@@ -30,6 +30,7 @@ const mouse = new THREE.Vector2();
 let selectedObject = null;
 let spaceshipView = false;
 let deathStarClicked = false;
+let inDialogue = false;
 
 // Chargement des textures
 const textureLoader = new THREE.TextureLoader();
@@ -224,16 +225,17 @@ let currentDialogueIndex = 0;
 
 // Function to show dialogue
 function showDialogue() {
-  const dialogueBox = document.getElementById('dialogue');
-  const dialogueText = document.getElementById('dialogue-text');
-  const nextDialogueButton = document.getElementById('next-dialogue');
+    inDialogue = true; // Début du dialogue
+    const dialogueBox = document.getElementById('dialogue');
+    const dialogueText = document.getElementById('dialogue-text');
+    const nextDialogueButton = document.getElementById('next-dialogue');
 
-  dialogueBox.style.display = 'flex';
-  dialogueText.textContent = dialogues[currentDialogueIndex];
-  nextDialogueButton.style.display = 'block';
+    dialogueBox.style.display = 'flex';
+    dialogueText.textContent = dialogues[currentDialogueIndex];
+    nextDialogueButton.style.display = 'block';
 
-  // Ajout de l'écouteur pour le bouton "Entrer"
-  document.addEventListener('keydown', handleKeyDown);
+    // Ajout de l'écouteur pour le bouton "Entrer"
+    document.addEventListener('keydown', handleKeyDown);
 }
 
 function handleKeyDown(event) {
@@ -244,22 +246,26 @@ function handleKeyDown(event) {
 
 // Function to proceed to the next dialogue
 function nextDialogue() {
-  currentDialogueIndex++;
-  if (currentDialogueIndex < dialogues.length) {
-      document.getElementById('dialogue-text').textContent = dialogues[currentDialogueIndex];
-  } else {
-      // End of dialogue
-      document.getElementById('dialogue').style.display = 'none';
-      const darthVaderMusic = document.getElementById('darth-vader-music');
-      darthVaderMusic.pause();
-      darthVaderMusic.currentTime = 0; // Reset playback position
+    currentDialogueIndex++;
+    if (currentDialogueIndex < dialogues.length) {
+        document.getElementById('dialogue-text').textContent = dialogues[currentDialogueIndex];
+    } else {
+        // Fin du dialogue
+        document.getElementById('dialogue').style.display = 'none';
+        const darthVaderMusic = document.getElementById('darth-vader-music');
+        darthVaderMusic.pause();
+        darthVaderMusic.currentTime = 0; // Réinitialiser la position de lecture
 
-      // Show Vader's ship and start its behavior
-      loadVaderShip();
+        // Montrer le vaisseau de Vader et démarrer son comportement
+        loadVaderShip();
 
-      // Remove the event listener for the "Enter" key
-      document.removeEventListener('keydown', handleKeyDown);
-  }
+        // Retirer l'écouteur pour la touche "Entrer"
+        document.removeEventListener('keydown', handleKeyDown);
+        inDialogue = false; // Fin du dialogue
+
+        // Reprendre l'animation
+        animate();
+    }
 }
 
 // Function to load Vader's ship
@@ -330,6 +336,11 @@ function onMouseClick(event) {
           return; // Ne pas permettre le clic en mode orbite
       }
 
+      // Nouvelle condition pour empêcher un deuxième clic sur l'Étoile de la Mort
+      if (selectedPlanet.userData.name === "Étoile de la Mort" && deathStarClicked) {
+         return; // Éviter de cliquer à nouveau sur l'Étoile de la Mort
+      }
+
       controls.enabled = false; // Désactiver les contrôles d'orbite pendant l'animation
 
       const targetPosition = new THREE.Vector3();
@@ -373,6 +384,12 @@ function displayInfo(data) {
     document.getElementById('planet-name').textContent = data.name;
     document.getElementById('planet-description').innerHTML = data.description;
     info.style.display = 'block';
+
+    if (spaceshipView) {
+        setTimeout(() => {
+            info.style.display = 'none';
+        }, 10000); // Masquer après 10 secondes
+    }
 }
 
 // Fermer les informations de l'objet
@@ -402,7 +419,9 @@ let animationSpeed = 0.0000000000001; // Vitesse d'animation initiale
 
 // Animation pour suivre la planète
 function animate() {
-  requestAnimationFrame(animate);
+    if (!inDialogue) {
+        requestAnimationFrame(animate);
+    }
   const time = Date.now() * animationSpeed; // Utilisation de la vitesse d'animation
   celestialBodies.forEach(body => {
       if (body.userData.period) {
