@@ -93,7 +93,7 @@ function createStar() {
 }
 
 // Ajouter plusieurs étoiles lumineuses à la scène
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 30; i++) {
     createStar();
 }
 
@@ -158,7 +158,7 @@ planetData.forEach(data => {
 const starsGeometry = new THREE.BufferGeometry();
 const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff });
 const starVertices = [];
-for (let i = 0; i < 10000; i++) {
+for (let i = 0; i < 5000; i++) {
     const x = THREE.MathUtils.randFloatSpread(2000);
     const y = THREE.MathUtils.randFloatSpread(2000);
     const z = THREE.MathUtils.randFloatSpread(2000);
@@ -279,7 +279,7 @@ function animate() {
     requestAnimationFrame(animate);
     const time = Date.now() * animationSpeed; // Utilisation de la vitesse d'animation
     celestialBodies.forEach(body => {
-        if (body.userData.period) {
+        if (!spaceshipView && body.userData.period) { // Désactiver les animations planétaires en mode vaisseau spatial
             const angularSpeed = (2 * Math.PI) / body.userData.period;
             body.userData.angle += angularSpeed * time;
             body.position.x = Math.cos(body.userData.angle) * body.userData.distance;
