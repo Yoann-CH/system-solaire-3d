@@ -12,31 +12,16 @@ document.body.appendChild(renderer.domElement);
 
 // Ajout des contrôles d'orbite pour la navigation
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; // activation de l'amortissement (inertie)
+controls.enableDamping = true;
 controls.dampingFactor = 0.05;
-controls.screenSpacePanning = false; // défilement dans l'espace de l'écran
-controls.minDistance = 10; // distance de zoom minimale
-controls.maxDistance = 1500; // distance de zoom maximale
+controls.screenSpacePanning = false;
+controls.minDistance = 10;
+controls.maxDistance = 1500;
+
 let mouseX = 0, mouseY = 0;
 const windowHalfX = window.innerWidth / 2;
 const windowHalfY = window.innerHeight / 2;
 
-// Ajout de la musique de fond
-const music = document.getElementById('background-music');
-document.getElementById('toggle-music').addEventListener('click', () => {
-    if (music.paused) {
-        music.play();
-        document.getElementById('toggle-music').textContent = 'Musique de fond : Off';
-    } else {
-        music.pause();
-        document.getElementById('toggle-music').textContent = 'Musique de fond : On';
-    }
-});
-
-document.getElementById('mute-music').addEventListener('click', () => {
-    music.muted = !music.muted;
-    document.getElementById('mute-music').textContent = music.muted ? 'Activer le son' : 'Couper le son';
-});
 document.addEventListener('mousemove', onMouseMove);
 
 // Raycaster pour détecter les clics sur les objets
@@ -62,11 +47,11 @@ const ringTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/image
 // Fonction pour créer des orbites
 function createOrbit(radius) {
     const curve = new THREE.EllipseCurve(
-        0, 0,            // ax, aY
-        radius, radius,   // xRadius, yRadius
-        0, 2 * Math.PI,   // aStartAngle, aEndAngle
-        false,            // aClockwise
-        0                 // aRotation
+        0, 0,
+        radius, radius,
+        0, 2 * Math.PI,
+        false,
+        0
     );
 
     const points = curve.getPoints(100);
@@ -74,14 +59,13 @@ function createOrbit(radius) {
 
     const material = new THREE.LineBasicMaterial({ color: 0xffffff });
 
-    // Create the final object to add to the scene
     const ellipse = new THREE.Line(geometry, material);
     ellipse.rotation.x = Math.PI / 2; // Rotate to horizontal
     return ellipse;
 }
 
 // Création du soleil
-const sunGeometry = new THREE.SphereGeometry(20, 32, 32); // Taille du soleil
+const sunGeometry = new THREE.SphereGeometry(20, 32, 32);
 const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 scene.add(sun);
@@ -405,7 +389,20 @@ toggleLinesButton.addEventListener('click', () => {
 // Musique de fond
 const backgroundMusic = document.getElementById('background-music');
 backgroundMusic.volume = 0.5;
-backgroundMusic.play();
+
+// Ajouter un écouteur pour démarrer la musique lors de la première interaction de l'utilisateur
+let userInteracted = false;
+function startMusicOnUserInteraction() {
+    if (!userInteracted) {
+        userInteracted = true;
+        backgroundMusic.play();
+        document.removeEventListener('click', startMusicOnUserInteraction);
+        document.removeEventListener('keydown', startMusicOnUserInteraction);
+    }
+}
+
+document.addEventListener('click', startMusicOnUserInteraction);
+document.addEventListener('keydown', startMusicOnUserInteraction);
 
 const musicButton = document.getElementById('toggle-music');
 musicButton.addEventListener('click', () => {
@@ -431,6 +428,9 @@ toggleViewButton.addEventListener('click', () => {
         toggleViewButton.textContent = "Switch to Orbit View";
         const pointer = document.getElementById('pointer');
         pointer.style.display = 'block';
+        if (!userInteracted) {
+            alert("Please click anywhere on the screen to enable background music.");
+        }
     } else {
         toggleViewButton.textContent = "Switch to Spaceship View";
         const pointer = document.getElementById('pointer');
