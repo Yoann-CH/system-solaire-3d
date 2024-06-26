@@ -2,26 +2,28 @@ body {
     margin: 0; 
     overflow: hidden; 
 }
+
 canvas { display: block; }
+
 #info {
     position: absolute;
     top: 10px;
     left: 10px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
     display: none;
-    max-width: 300px; /* Ajoutez une largeur maximale pour éviter que les lignes de description soient trop longues */
-    word-wrap: break-word; /* Permet de renvoyer à la ligne les mots longs */
-}
-#info button {
-    background: #444;
+    max-width: 300px;
+    word-wrap: break-word;
+
+    background-color: black;
     color: white;
-    border: none;
-    padding: 5px 10px;
+    font-size: 0.8rem;
+    text-align: center;
+    border: 1px solid #FFE81F;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    width: 250px;
     cursor: pointer;
 }
+
 #controls {
     position: absolute;
     top: 10px;
@@ -40,7 +42,8 @@ canvas { display: block; }
 }
 
 #launch-space {
-    background-image: url('/src/assets/images/vaisseau.png');
+    background-image: url('/src/assets/images/spaceship.png');
+    color: white;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -49,7 +52,10 @@ canvas { display: block; }
     width: 100px;
     border: none;
     cursor: pointer;
-    margin-top: 20px;
+}
+
+#launch-space:hover {
+    background-image: url('/src/assets/images/spaceship-hover.png');
 }
 
 #ui {
@@ -81,28 +87,154 @@ canvas { display: block; }
     transform: translate(-50%, -50%);
     background: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 40px;
+    padding: 0 2.5rem;
     border-radius: 10px;
     text-align: center;
-    z-index: 2000; /* Ensure it appears above other elements */
-    width: 500px; /* Increase the width */
+    z-index: 2000;
+    border: 1px solid #FFE81F;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+#planet-name {
+    font-family: 'Star Wars', sans-serif;
+}
+
+#planet-description {
+    font-family: sans-serif;
+    font-size: 1rem;
+}
+
+#dialogue-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    justify-content: center;
 }
 
 #dialogue img {
-    width: 150px;
+    width: 350px;
     height: auto;
-    margin-bottom: 20px;
 }
 
 #dialogue-text {
-    font-size: 18px;
+    font-family: 'Star Wars', sans-serif;
+    color: white;
+    font-size: 0.8rem;
     margin-bottom: 20px;
 }
 
-#next-dialogue {
-    background: #444;
+#loading-screen {
+    font-family: 'Star Wars', sans-serif;
     color: white;
-    border: none;
-    padding: 10px 20px;
+    font-size: 1.5rem;
+}
+
+#controls {
+    width: fit-content;
+    padding: 0;
+}
+
+#speed-label,
+#toggle-orbits,
+#toggle-music,
+#mute-music,
+#toggle-lines,
+#launch-space,
+#next-dialogue,
+#close-info {
+    font-family: 'Star Wars', sans-serif;
+    background-color: black;
+    color: white;
+    font-size: 0.8rem;
+    text-align: center;
+    border: 1px solid #FFE81F;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    width: 250px;
     cursor: pointer;
+}
+
+
+#toggle-orbits:hover,
+#toggle-music:hover,
+#mute-music:hover,
+#toggle-lines:hover,
+#next-dialogue:hover,
+#close-info:hover {
+    color: #FFE81F;
+}
+
+
+input[type="range"] {
+    -webkit-appearance: none;
+    font-family: 'Star Wars', sans-serif;
+    background-color: black;
+    color: white;
+    font-size: 0.8rem;
+    text-align: center;
+    border: 1px solid #FFE81F;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    width: 215px;
+    height: 1rem;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #FFE81F;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #FFE81F;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: #FFF;
+    border-radius: 5px;
+}
+
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: #FFF;
+    border-radius: 5px;
+}
+
+input[type="range"]::-moz-range-progress {
+    background: #FFE81F;
+}
+
+input[type="range"]::-ms-fill-lower {
+    background: #FFE81F;
+}
+
+input[type="range"]::-ms-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type="range"]::-ms-fill-upper {
+    background: #FFF;
 }
