@@ -360,6 +360,44 @@ resetButton.addEventListener('click', () => {
 });
 document.body.appendChild(resetButton);
 
+
+
+// Charger le modèle GLB
+const loader = new THREE.GLTFLoader();
+loader.load('/models/halo_ring.glb', function(gltf) {
+    const haloRing = gltf.scene;
+    haloRing.scale.set(0.05, 0.05, 0.05); // Redimensionner le modèle
+    haloRing.position.set(25, 150, 0);
+    const userData = { name: "Halo ring", description: "Téléportation !!!" };
+
+    // Ajoutez userData à tous les enfants de Halo Ring
+    haloRing.traverse(function(child) {
+        if (child.isMesh) {
+            child.userData = userData;
+            celestialBodies.push(child);
+        }
+    });
+
+    scene.add(haloRing);
+
+    // Gestion du clic sur le halo ring pour la redirection
+    window.addEventListener('click', function(event) {
+        event.preventDefault();
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(celestialBodies, true);
+        if (intersects.length > 0) {
+            selectedObject = intersects[0].object;
+            if (selectedObject.userData && selectedObject.userData.name === "Halo ring") {
+                window.location.href = 'Galaxie.html'; // Redirection vers la nouvelle page
+            }
+        }
+    }, false);
+}, undefined, function(error) {
+    console.error(error);
+});
+
 // Musique de fond
 const backgroundMusic = document.getElementById('background-music');
 backgroundMusic.volume = 0.5;
