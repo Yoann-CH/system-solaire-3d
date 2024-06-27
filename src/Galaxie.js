@@ -52,9 +52,9 @@ loader.load('/models/need_some_space.glb', function(gltf) {
 
     // Création de plusieurs soleils à l'intérieur de la galaxie
     const sunsData = [
-        { color: 0xff0000, position: { x: -4, y: 1, z: 0 }, name: "soleil rouge" , link: "Explosion.html"},
-        { color: 0xffa500, position: { x: 1, y: 1, z: 0 }, name: "soleil orange", link: "carre.html"},
-        { color: 0xffff00, position: { x: 7, y: 1, z: 0 }, name: "soleil jaune", link: "systeme-solaire.html" },
+        { color: 0xff0000, position: { x: -4, y: 1, z: 0 }, name: "soleil rouge" , link: "Explosion.html", description: "la fin approche ..." },
+        { color: 0xffa500, position: { x: 1, y: 1, z: 0 }, name: "soleil orange", link: "carre.html", description: "Les minecraftiens sont la !"},
+        { color: 0xffff00, position: { x: 7, y: 1, z: 0 }, name: "soleil jaune", link: "systeme-solaire.html", description: "Le systeme solaire" },
     ];
 
     sunsData.forEach(data => {
@@ -67,7 +67,7 @@ loader.load('/models/need_some_space.glb', function(gltf) {
         const sunMaterial = new THREE.MeshBasicMaterial({ color: data.color });
         const sun = new THREE.Mesh(sunGeometry, sunMaterial);
         sun.position.set(data.position.x, data.position.y, data.position.z);
-        sun.userData = { name: data.name, description: `Ceci est le ${data.name}`, link: data.link };
+        sun.userData = { name: data.name, description: data.description, link: data.link };
         scene.add(sun); // Ajouter les soleils directement à la scène pour pouvoir cliquer dessus
         suns.push(sun); // Ajouter le soleil à la liste des soleils cliquables
     });
