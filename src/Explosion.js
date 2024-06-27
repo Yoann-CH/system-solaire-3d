@@ -361,7 +361,7 @@ resetButton.addEventListener('click', () => {
 document.body.appendChild(resetButton);
 
 
-
+//Anneau Halo
 // Charger le modèle GLB
 const loader = new THREE.GLTFLoader();
 loader.load('/models/halo_ring.glb', function(gltf) {
