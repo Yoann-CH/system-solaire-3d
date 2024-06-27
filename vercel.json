@@ -1,0 +1,6 @@
+{
+    "rewrites": [
+        { "source": "/galaxie", "destination": "/src/galaxie.html" }
+    ]
+}
+  
