@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import path from 'path';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
   build: {
@@ -14,5 +15,23 @@ export default defineConfig({
   },
   server: {
     open: true
-  }
+  },
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'src/*.html',
+          dest: 'src'
+        },
+        {
+          src: 'src/assets/images/*',
+          dest: 'assets/images'
+        },
+        {
+          src: 'src/assets/music/*',
+          dest: 'assets/music'
+        }
+      ]
+    })
+  ]
 });
