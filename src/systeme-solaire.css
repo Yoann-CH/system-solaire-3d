@@ -1,6 +1,6 @@
-body { 
-    margin: 0; 
-    overflow: hidden; 
+body {
+    margin: 0;
+    overflow: hidden;
 }
 
 canvas { display: block; }
@@ -144,8 +144,9 @@ canvas { display: block; }
 #toggle-lines,
 #launch-space,
 #next-dialogue,
+#info,
 #close-info {
-    font-family: 'Star Wars', sans-serif;
+    font-family: 'Star Wars', sans-serif !important;
     background-color: black;
     color: white;
     font-size: 0.8rem;
@@ -237,4 +238,29 @@ input[type="range"]::-ms-track {
 
 input[type="range"]::-ms-fill-upper {
     background: #FFF;
+}
+.main-button {
+    background-color: black;
+    color: white;
+    font-size: 0.8rem;
+    text-align: center;
+    border: 1px solid #4bd5ee;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    width: 250px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.main-button:hover {
+    background-color: #4bd5ee;
+    color: black;
+}
+.main-title {
+    font-family: "News Cycle", sans-serif;
+    color: #4bd5ee;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.35;
+    padding-bottom: 1rem;
 }

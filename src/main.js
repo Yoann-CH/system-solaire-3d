@@ -20,4 +20,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
             konamiCodePosition = 0;
         }
     });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.keyCode === 27) {
+            console.log('Touche Echap appuyée');
+            const currentDomain = window.location.origin;
+            // Construire l'URL de redirection
+            const redirectUrl = `${currentDomain}/src/Galaxie.html`;
+            // Rediriger vers la nouvelle URL
+            window.location.href = redirectUrl;
+        }
+    });
 });
