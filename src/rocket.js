@@ -1,41 +1,40 @@
-const canvas = document.getElementById('rocketCanvas');
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+const rocketCanvas = document.getElementById('rocketCanvas');
+const rocketScene = new THREE.Scene();
+const rocketCamera = new THREE.PerspectiveCamera(75, rocketCanvas.clientWidth / rocketCanvas.clientHeight, 0.1, 1000);
+const rocketRenderer = new THREE.WebGLRenderer({ canvas: rocketCanvas, alpha: true });
+rocketRenderer.setSize(rocketCanvas.clientWidth, rocketCanvas.clientHeight);
 
-const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(5, 5, 5).normalize();
-scene.add(light);
+const rocketLight = new THREE.DirectionalLight(0xffffff, 1);
+rocketLight.position.set(5, 5, 5).normalize();
+rocketScene.add(rocketLight);
 
-const loader = new THREE.GLTFLoader();
+const rocketLoader = new THREE.GLTFLoader();
 let rocket;
-loader.load('/models/rocket.glb', function(gltf) {
+rocketLoader.load('rocket.glb', function(gltf) {
     rocket = gltf.scene;
-    rocket.scale.set(0.1, 0.1, 0.1); // Réduire la taille du modèle
-    rocket.position.set(1, -3, 0); // Positionner la fusée en bas de l'écran
-    scene.add(rocket);
+    rocket.scale.set(0.5, 0.5, 0.5); // Augmenter encore la taille du modèle
+    rocket.position.set(0, -1.5, 0); // Positionner la fusée en bas
+    rocketScene.add(rocket);
+    rocketAnimate(); // Commencer l'animation dès que la fusée est chargée
 });
 
-camera.position.z = 5;
+rocketCamera.position.z = 5;
 
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+function rocketAnimate() {
+    requestAnimationFrame(rocketAnimate);
+    rocketRenderer.render(rocketScene, rocketCamera);
 }
 
-animate();
-
-canvas.addEventListener('click', () => {
+rocketCanvas.addEventListener('click', () => {
     if (rocket) {
-        rocket.position.y = -3; // S'assurer que la fusée commence en bas
+        rocket.position.y = -1.5; // S'assurer que la fusée commence en bas
         const interval = setInterval(() => {
             rocket.position.y += 0.05;
             if (rocket.position.y >= 4) { // Arrêter l'animation après que la fusée ait décollé
                 clearInterval(interval);
                 setTimeout(() => {
-                    window.location.href = 'landing.html';
-                }, 100); // Redirection après 2 secondes
+                    window.location.href = 'src/landing.html';
+                }, 2000); // Redirection après 2 secondes
             }
         }, 30); // Ajuster la vitesse de décollage
     }
