@@ -52,9 +52,9 @@ loader.load('/models/need_some_space.glb', function(gltf) {
 
     // Création de plusieurs soleils à l'intérieur de la galaxie
     const sunsData = [
-        { color: 0xff0000, position: { x: -4, y: 1, z: 0 }, name: "Soleil Rouge" , link: "Explosion.html"},
-        { color: 0xffa500, position: { x: 1, y: 1, z: 0 }, name: "Soleil Orange", link: "carre.html"},
-        { color: 0xffff00, position: { x: 7, y: 1, z: 0 }, name: "Soleil Jaune", link: "systeme-solaire.html" },
+        { color: 0xff0000, position: { x: -4, y: 1, z: 0 }, name: "soleil rouge" , link: "Explosion.html"},
+        { color: 0xffa500, position: { x: 1, y: 1, z: 0 }, name: "soleil orange", link: "carre.html"},
+        { color: 0xffff00, position: { x: 7, y: 1, z: 0 }, name: "soleil jaune", link: "systeme-solaire.html" },
     ];
 
     sunsData.forEach(data => {
@@ -71,7 +71,7 @@ loader.load('/models/need_some_space.glb', function(gltf) {
         scene.add(sun); // Ajouter les soleils directement à la scène pour pouvoir cliquer dessus
         suns.push(sun); // Ajouter le soleil à la liste des soleils cliquables
     });
-    
+
 });
 
 camera.position.set(0, 0, 30);
