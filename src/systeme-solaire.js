@@ -552,7 +552,7 @@ toggleLinesButton.addEventListener('click', () => {
 
 // Charger le modèle GLB
 const loader = new THREE.GLTFLoader();
-loader.load('halo_ring.glb', function(gltf) {
+loader.load('/models/halo_ring.glb', function(gltf) {
     const haloRing = gltf.scene;
     haloRing.scale.set(0.05, 0.05, 0.05); // Redimensionner le modèle
     haloRing.position.set(25, 150, 0);
