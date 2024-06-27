@@ -33,11 +33,11 @@ export default defineConfig({
         },
         {
           src: 'src/assets/images/*',
-          dest: 'assets/images'
+          dest: 'src/assets/images'
         },
         {
           src: 'src/assets/music/*',
-          dest: 'assets/music'
+          dest: 'src/assets/music'
         }
       ]
     })
