@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="/src/systeme-solaire.css">
+    <link rel="stylesheet" href="/src/landing.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil - Système Solaire</title>
     <style>
         body {
+            background: #000;
+            color: #fff;
+            font-family: 'Archivo Narrow', sans-serif;
+            margin: 0;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            background: url('assets/images/ref-star.png') no-repeat center center fixed; /* Chemin vers votre image de fond */
-            background-size: cover; /* Assure que l'image couvre tout l'écran */
-            color: #fff;
-            font-family: Arial, sans-serif;
         }
         .container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.5); /* Ajoute un fond semi-transparent pour améliorer la lisibilité du texte */
-            padding: 20px;
-            border-radius: 10px;
+            /* text-align: center; */
+           /*  background: rgba(0, 0, 0, 0.5); */ /* Ajoute un fond semi-transparent pour améliorer la lisibilité du texte */
+          /*   padding: 20px; */
+          /*   border-radius: 10px; */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
         }
         .button {
             padding: 15px 30px;
@@ -36,10 +42,26 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="main-title">Il était une fois, dans une galaxie lointaine, très lointaine...</h1>
-        <a href="src/Galaxie.html" class="main-button">Décoller</a>
-    </div>
+
+   <!-- I did not find the text of the original generic. So here is a translation into my native language. -->
+<audio autoplay>
+    <source src="./src/assets/music/main_theme_star_wars.mp3" type="audio/ogg">
+        <source src="./src/assets/music/main_theme_star_wars.mp3" type="audio/mp3">
+        Your web browser is outdated or don't support OGG and MP3 codecs. 
+      </audio>
+        <div id="prelude">Il était une fois, dans une galaxie lointaine, très lointaine ....</div>
+      <div id="intro">
+          <canvas id="canvas"></canvas>
+          <div id="introContent">
+            <h2>La terre plate<br /><br />Episode I</h2>
+          <h2>La fugue des Aliens</h2>
+          <p>Dans les profondeurs de l'espace, une conspiration se trame contre la Terre. Un duo d'Aliens, après avoir révélé leur existence lors d'un salon sur les OVNIs, se précipite vers leur vaisseau spatial.</p>
+          <p>Leur but : utiliser l'Étoile de la Mort pour anéantir la vie sur Terre. Cette arme redoutable peut pulvériser des planètes entières. Leur mission ? Préserver leur identité secrète en effaçant toute preuve de leur présence extraterrestre.</p>
+          <p>À bord de leur vaisseau sinistre, ils planifient minutieusement leur attaque, conscient que leur succès repose sur leur capacité à agir rapidement et discrètement....</p>
+          </div>
+      </div>
+    <script src="/src/landing.js"></script>
     <script src="/src/main.js"></script>
+
 </body>
 </html>

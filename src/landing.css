@@ -1,0 +1,134 @@
+@-webkit-keyframes prelude {
+    from{opacity: 0;}
+    20%{opacity: 1;}
+    80%{opacity: 1;}
+    to{opacity: 0;}
+  }
+  
+  @-moz-keyframes prelude {
+    from{opacity: 0;}
+    20%{opacity: 1;}
+    80%{opacity: 1;}
+    to{opacity: 0;}
+  }
+  @-o-keyframes prelude {
+    from{opacity: 0;}
+    20%{opacity: 1;}
+    80%{opacity: 1;}
+    to{opacity: 0;}
+  }
+  
+  @-webkit-keyframes introContent {
+    from{opacity: 1; -webkit-transform: rotateX(80deg) scaleY(0.1) translateY(800px);}
+    50%{opacity: 1;}
+    60%{opacity: 0;}
+    to{-webkit-transform: rotateX(80deg) scaleY(0.1) translateY(-1500px);}
+  }
+  
+  @-moz-keyframes introContent {
+    from{opacity: 1; -moz-transform: rotateX(80deg) scaleY(0.1) translateY(800px);}
+    50%{opacity: 1;}
+    60%{opacity: 0;}
+    to{-moz-transform: rotateX(80deg) scaleY(0.1) translateY(-1500px);}
+  }
+  
+  @-o-keyframes introContent {
+    from{opacity: 1; -o-transform: rotateX(80deg) scaleY(0.1) translateY(800px);}
+    50%{opacity: 1;}
+    60%{opacity: 0;}
+    to{-o-transform: rotateX(80deg) scaleY(0.1) translateY(-1500px);}
+  }
+  
+  body{
+    background: #000;
+    color: #fff;
+    font-family: 'Archivo Narrow', sans-serif;
+  }
+  
+  #canvas{
+    position: absolute;
+    z-index: 1;
+    display: none;
+  }
+  
+  #intro{
+    position: fixed;
+    padding: 10px;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    left: 0;
+    color: #E7AE05;
+    -webkit-perspective: 60;
+    -webkit-perspective-origin: center 0;
+    -moz-perspective: 60px;
+    -moz-perspective-origin: center 0;
+    -o-perspective: 60;
+    -o-perspective-origin: center 0;
+    letter-spacing: 1px;
+    text-align: justify;
+    text-shadow: 0 0 1px #E7AE05;
+  }
+  
+  #introContent{
+    opacity: 0;
+    font-size: 30px;
+    line-height: 35px;
+    cursor: default;
+    width: 45%;
+    margin: 0 auto;
+    -webkit-transform: rotateX(80deg) scaleY(0.1);
+    -moz-transform: rotateX(80deg) scaleY(0.1);
+    -o-transform: rotateX(80deg) scaleY(0.1);
+      -webkit-animation-name: introContent;
+      -webkit-animation-timing-function: linear;
+      -webkit-animation-duration: 60s;
+      -webkit-animation-delay: 2s;
+      -webkit-animation-iteration-count: 1;
+      -moz-animation-name: introContent;
+      -moz-animation-timing-function: linear;
+      -moz-animation-duration: 60s;
+      -moz-animation-delay: 2s;
+      -moz-animation-iteration-count: 1;
+      -o-animation-name: introContent;
+      -o-animation-timing-function: linear;
+      -o-animation-duration: 60s;
+      -o-animation-delay: 2s;
+      -o-animation-iteration-count: 1;
+  }
+  
+  #skipIntro{
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+  }
+  
+  h1, h2, h3, h4{
+    text-align: center;
+  }
+  
+  audio{
+    display: none;
+  }
+  
+  #prelude{
+    opacity: 0;
+    color: #1B7DEB;
+    text-align: center;
+    margin-top: 20%;
+    text-shadow: 0 0 1px #1B7DEB;
+    font-size: 20px;
+      -webkit-animation-name: prelude;
+      -webkit-animation-timing-function: linear;
+      -webkit-animation-duration: 5s;
+      -webkit-animation-iteration-count: 1;
+      -moz-animation-name: prelude;
+      -moz-animation-timing-function: linear;
+      -moz-animation-duration: 5s;
+      -moz-animation-iteration-count: 1;
+      -o-animation-name: prelude;
+      -o-animation-timing-function: linear;
+      -o-animation-duration: 5s;
+      -o-animation-iteration-count: 1;
+  }
