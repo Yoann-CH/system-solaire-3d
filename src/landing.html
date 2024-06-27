@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="landing.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Système Solaire</title>
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Archivo Narrow', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <audio id="musicStar" loop>
+        <source src="assets/music/main_theme_star_wars.mp3" type="audio/mp3">
+        Your web browser is outdated or doesn't support OGG and MP3 codecs.
+    </audio>
+    <div id="prelude">Il était une fois, dans une galaxie lointaine, très lointaine ....</div>
+    <div id="intro">
+        <canvas id="canvas"></canvas>
+        <div id="introContent">
+            <h2>La terre plate<br /><br />Episode I</h2>
+            <h2>La fugue des Aliens</h2>
+            <p>Dans les profondeurs de l'espace, une conspiration se trame contre la Terre. Un duo d'Aliens, après avoir révélé leur existence lors d'un salon sur les OVNIs, se précipite vers leur vaisseau spatial.</p>
+            <p>Leur but : utiliser l'Étoile de la Mort pour anéantir la vie sur Terre. Cette arme redoutable peut pulvériser des planètes entières. Leur mission ? Préserver leur identité secrète en effaçant toute preuve de leur présence extraterrestre.</p>
+            <p>À bord de leur vaisseau sinistre, ils planifient minutieusement leur attaque, conscients que leur succès repose sur leur capacité à agir rapidement et discrètement....</p>
+        </div>
+    </div>
+    <script src="landing.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
