@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Système Solaire en Three.js</title>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
+        body { 
+            margin: 0; 
+            overflow: hidden; 
         }
         canvas { display: block; }
         #info {
@@ -116,7 +116,6 @@
     let selectedObject = null;
 
     // Chargement des textures
-    // Chargement des textures
 const textureLoader = new THREE.TextureLoader();
 const sunTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7VwyE5iw-iGoEvUj9BV5mnCSpmUi-By-42Q&s');
 const mercuryTexture = textureLoader.load('https://cdn.pixabay.com/photo/2022/06/30/02/16/mercury-7292788_1280.jpg');
@@ -218,15 +217,15 @@ const ringTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/image
         haloRing.position.set(25, 150, 0);
         const userData = { name: "Halo ring", description: "Téléportation !!!" };
 
-    // Ajoutez userData à tous les enfants de Halo Ring
-    haloRing.traverse(function(child) {
-        if (child.isMesh) {
-            child.userData = userData;
-            celestialBodies.push(child);
-        }
-    });
+        // Ajoutez userData à tous les enfants de Halo Ring
+        haloRing.traverse(function(child) {
+            if (child.isMesh) {
+                child.userData = userData;
+                celestialBodies.push(child);
+            }
+        });
 
-    scene.add(haloRing);
+        scene.add(haloRing);
 
         // Gestion du clic sur le halo ring pour la redirection
         window.addEventListener('click', function(event) {
@@ -237,7 +236,7 @@ const ringTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/image
             const intersects = raycaster.intersectObjects(celestialBodies, true);
             if (intersects.length > 0) {
                 selectedObject = intersects[0].object;
-                if (selectedObject.parent === haloRing || selectedObject === haloRing) {
+                if (selectedObject.userData && selectedObject.userData.name === "Halo ring") {
                     window.location.href = 'Galaxie.html'; // Redirection vers la nouvelle page
                 }
             }
@@ -304,6 +303,7 @@ const ringTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/image
     const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff });
     const starVertices = [];
     for (let i = 0; i < 10000; i++) {
+
         const x = THREE.MathUtils.randFloatSpread(2000);
         const y = THREE.MathUtils.randFloatSpread(2000);
         const z = THREE.MathUtils.randFloatSpread(2000);
@@ -457,6 +457,5 @@ const ringTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/image
     });
 
 </script>
-<script src="/src/main.js"></script>
 </body>
 </html>
