@@ -1,8 +1,3 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import TWEEN from '@tweenjs/tween.js';
-
 // Initialisation de la scène, de la caméra et du renderer
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
@@ -11,7 +6,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // Ajout des contrôles d'orbite pour la navigation
-const controls = new OrbitControls(camera, renderer.domElement);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.screenSpacePanning = false;
@@ -173,7 +168,7 @@ scene.add(starPoints);
 celestialBodies.push(sun); // Ajouter le Soleil aux objets cliquables
 
 // Ajout de l'Étoile de la Mort
-const deathStarLoader = new GLTFLoader();
+const deathStarLoader = new THREE.GLTFLoader();
 deathStarLoader.load('/models/etoile_de_la_mort.glb', function(gltf) {
     const deathStar = gltf.scene;
     deathStar.scale.set(2, 2, 2); // Réduire l'échelle si nécessaire
@@ -200,7 +195,7 @@ const maxSpeed = 2;
 const keys = {};
 
 // Charger le modèle du vaisseau spatial
-const spaceshipLoader = new GLTFLoader();
+const spaceshipLoader = new THREE.GLTFLoader();
 spaceshipLoader.load('/models/spaceship.glb', function(gltf) {
     spaceship = gltf.scene;
     spaceship.scale.set(0.01, 0.01, 0.01); // Ajuster l'échelle
@@ -288,7 +283,7 @@ function nextDialogue() {
 
 // Function to load Vader's ship
 function loadVaderShip() {
-    const vaderShipLoader = new GLTFLoader();
+    const vaderShipLoader = new THREE.GLTFLoader();
     vaderShipLoader.load('/models/dark_vador.glb', function(gltf) {
         const vaderShip = gltf.scene;
         vaderShip.scale.set(0.0005, 0.0005, 0.0005); // Adjust scale
