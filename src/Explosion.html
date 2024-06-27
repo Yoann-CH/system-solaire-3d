@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système Solaire en Three.js</title>
+    <link rel="stylesheet" href="Explosion.css">
+</head>
+<body>
+    <div id="info">
+        <h2 id="planet-name">Objet</h2>
+        <p id="planet-description">Description</p>
+        <button id="close-info">Fermer</button>
+    </div>
+    <div id="controls">
+        <label for="speed">Vitesse d'animation:</label>
+        <input type="range" id="speed" name="speed" min="0.000000000000001" max="0.000000000002" step="0.000000000000001" value="0.0000000000001">
+        <br>
+        <button id="toggle-orbits">Afficher/Masquer les lunes et les anneaux</button>
+        <button id="toggle-music">Musique de fond : On</button>
+        <button id="mute-music">Couper le son</button>
+        <button id="toggle-lines">Afficher/Masquer les lignes</button>
+    </div>
+    <audio id="background-music" loop>
+        <source src="Space_slow.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.137.5/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.137.5/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.137.5/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="Explosion.js"></script>
+</body>
+</html>
