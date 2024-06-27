@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Fonction à exécuter lorsque le code Konami est saisi correctement
     function konamiCodeActivated() {
-        alert('Code Konami activé!');
-        // Ajoutez ici l'action que vous souhaitez effectuer
+        // alert('Code Konami activé!');
+        window.location.href = '/src/pop-culture.html';
     }
 
     // Écouteur d'événement pour les touches enfoncées
