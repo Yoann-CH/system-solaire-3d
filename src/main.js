@@ -32,6 +32,10 @@ let spaceshipView = false;
 let deathStarClicked = false;
 let inDialogue = false;
 
+
+// Initialisation du tableau des corps célestes
+const celestialBodies = [];
+
 // Chargement des textures
 const textureLoader = new THREE.TextureLoader();
 const sunTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7VwyE5iw-iGoEvUj9BV5mnCSpmUi-By-42Q&s');
@@ -70,7 +74,15 @@ function createOrbit(radius) {
 const sunGeometry = new THREE.SphereGeometry(20, 32, 32);
 const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+sun.userData = {
+    name: "Soleil",
+    description: "Le Soleil est l'étoile au centre du système solaire. <br>Taille: 1,392,700 km de diamètre. <br>Distance de la Terre: 149,600,000 km.",
+    distance: 0,
+    period: 0,
+    rotationSpeed: 0.01
+};
 scene.add(sun);
+celestialBodies.push(sun); // Ajouter le Soleil aux objets cliquables
 
 // Ajout d'une lumière ponctuelle pour simuler la lumière du Soleil
 const pointLight = new THREE.PointLight(0xffffff, 2, 3000);
@@ -89,7 +101,6 @@ const planetData = [
     { name: "Neptune", texture: neptuneTexture, distance: 160, size: 5, period: 60190, rotationSpeed: 0.01, description: "Neptune est la planète la plus éloignée du Soleil. <br>Taille: 49,244 km de diamètre. <br>Distance du Soleil: 4,498,250,000 km. <br>Nombre de lunes: 14 (Triton, etc.).", moons: [{ name: "Triton", texture: moonTexture, size: 0.8, distance: 3, period: 5.9, rotationSpeed: 0.01 }] },
 ];
 
-const celestialBodies = [];
 const moonsAndRings = [];
 const orbits = [];
 
@@ -323,58 +334,60 @@ function animateVaderShip(vaderShip) {
 let selectedPlanet = null; // Variable pour stocker la planète sélectionnée
 
 function onMouseClick(event) {
-  event.preventDefault();
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-  raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects(celestialBodies, true);
-  if (intersects.length > 0) {
-      selectedPlanet = intersects[0].object;
+    event.preventDefault();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(celestialBodies, true);
+    if (intersects.length > 0) {
+        selectedPlanet = intersects[0].object;
 
-      // Condition pour vérifier si l'Étoile de la Mort est cliquée en mode vaisseau
-      if (!spaceshipView && selectedPlanet.userData.name === "Étoile de la Mort") {
-          return; // Ne pas permettre le clic en mode orbite
-      }
+        // Condition pour vérifier si l'Étoile de la Mort est cliquée en mode vaisseau
+        if (!spaceshipView && selectedPlanet.userData.name === "Étoile de la Mort") {
+            return; // Ne pas permettre le clic en mode orbite
+        }
 
-      // Nouvelle condition pour empêcher un deuxième clic sur l'Étoile de la Mort
-      if (selectedPlanet.userData.name === "Étoile de la Mort" && deathStarClicked) {
-         return; // Éviter de cliquer à nouveau sur l'Étoile de la Mort
-      }
+        // Nouvelle condition pour empêcher un deuxième clic sur l'Étoile de la Mort
+        if (selectedPlanet.userData.name === "Étoile de la Mort" && deathStarClicked) {
+            return; // Éviter de cliquer à nouveau sur l'Étoile de la Mort
+        }
 
-      controls.enabled = false; // Désactiver les contrôles d'orbite pendant l'animation
+        controls.enabled = false; // Désactiver les contrôles d'orbite pendant l'animation
 
-      const targetPosition = new THREE.Vector3();
-      selectedPlanet.getWorldPosition(targetPosition);
+        const targetPosition = new THREE.Vector3();
+        selectedPlanet.getWorldPosition(targetPosition);
 
-      const direction = new THREE.Vector3();
-      direction.subVectors(camera.position, targetPosition).normalize();
-      const oppositePosition = new THREE.Vector3();
-      oppositePosition.addVectors(targetPosition, direction.multiplyScalar(40));
+        const direction = new THREE.Vector3();
+        direction.subVectors(camera.position, targetPosition).normalize();
+        const oppositePosition = new THREE.Vector3();
+        oppositePosition.addVectors(targetPosition, direction.multiplyScalar(40));
 
-      new TWEEN.Tween(camera.position)
-          .to({
-              x: oppositePosition.x,
-              y: oppositePosition.y,
-              z: oppositePosition.z
-          }, 2000)
-          .easing(TWEEN.Easing.Quadratic.InOut)
-          .onUpdate(() => {
-              camera.lookAt(targetPosition);
-          })
-          .onComplete(() => {
-              controls.target.copy(targetPosition);
-              controls.enabled = true;
-              if (selectedPlanet.userData.name === "Étoile de la Mort") {
-                  deathStarClicked = true;
-                  const darthVaderMusic = document.getElementById('darth-vader-music');
-                  darthVaderMusic.play();
-                  showDialogue();
-              } else {
-                  displayInfo(selectedPlanet.userData);
-              }
-          })
-          .start();
-  }
+        new TWEEN.Tween(camera.position)
+            .to({
+                x: oppositePosition.x,
+                y: oppositePosition.y,
+                z: oppositePosition.z
+            }, 2000)
+            .easing(TWEEN.Easing.Quadratic.InOut)
+            .onUpdate(() => {
+                camera.lookAt(targetPosition);
+            })
+            .onComplete(() => {
+                controls.target.copy(targetPosition);
+                controls.enabled = true;
+                if (selectedPlanet.userData.name === "Étoile de la Mort") {
+                    deathStarClicked = true;
+                    const darthVaderMusic = document.getElementById('darth-vader-music');
+                    darthVaderMusic.play();
+                    showDialogue();
+                } else if (selectedPlanet.userData.name === "Soleil") { // Vérifiez si le Soleil est cliqué
+                    displayInfo(selectedPlanet.userData);
+                } else {
+                    displayInfo(selectedPlanet.userData);
+                }
+            })
+            .start();
+    }
 }
 window.addEventListener('click', onMouseClick, false);
 
