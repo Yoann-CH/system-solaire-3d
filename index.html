@@ -3,38 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Système Solaire en Three.js</title>
-    <link rel="stylesheet" href="/src/style.css">
-    <link href="https://fonts.cdnfonts.com/css/star-wars" rel="stylesheet">
+    <title>Accueil - Système Solaire</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('assets/images/ref-star.png') no-repeat center center fixed; /* Chemin vers votre image de fond */
+            background-size: cover; /* Assure que l'image couvre tout l'écran */
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5); /* Ajoute un fond semi-transparent pour améliorer la lisibilité du texte */
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-<div id="info">
-    <h2 id="planet-name">Objet</h2>
-    <p id="planet-description">Description</p>
-    <button id="close-info">Fermer</button>
-</div>
-<div id="controls">
-    <!-- <label id="speed-label" for="speed">Vitesse d'animation:</label> -->
-    <input type="range" id="speed" name="speed" min="0.00000000000001" max="0.000000000002" step="0.00000000000001" value="0.0000000000001">
-    <br>
-    <button id="toggle-orbits">Afficher/Masquer les lunes et les anneaux</button>
-    <button id="toggle-music">Musique de fond : off</button>
-    <button id="toggle-lines">Afficher/Masquer les lignes</button>
-    <button id="launch-space"></button>
-</div>
-<div id="dialogue" style="display:none;">
-  <img id="vader-image" src="src/assets/images/dark_vador.png" alt="Darth Vader">
-  <div id="dialogue-block">
-    <div id="dialogue-text"></div>
-    <button id="next-dialogue" style="display:none;">Entrer</button>
-  </div>
-</div>
-<img id="pointer" src="/src/assets/images/pointeur.png" alt="pointer">
-<audio id="background-music" loop>
-    <source src="/src/assets/music/space_slow.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
-</audio>
-<audio id="darth-vader-music" src="src/assets/music/dark_vador.mp3" preload="auto"></audio>
-<script type="module" src="/src/main.js"></script>
+    <div class="container">
+        <h1>Il était une fois, dans une galaxie lointaine, très lointaine...</h1>
+        <a href="src/galaxie.html" class="button">Décoller ?</a>
+    </div>
 </body>
 </html>

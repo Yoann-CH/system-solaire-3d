@@ -44,7 +44,7 @@ window.addEventListener('mousemove', onMouseMove, false);
 
 // Chargement du modèle de la galaxie
 const loader = new THREE.GLTFLoader();
-loader.load('need_some_space.glb', function(gltf) {
+loader.load('/models/need_some_space.glb', function(gltf) {
     const galaxy = gltf.scene;
     galaxy.scale.set(10, 10, 10); // Ajuster l'échelle de la galaxie
     galaxy.position.set(-13, -14, 15); // Centrer la galaxie
@@ -52,9 +52,9 @@ loader.load('need_some_space.glb', function(gltf) {
 
     // Création de plusieurs soleils à l'intérieur de la galaxie
     const sunsData = [
-        { color: 0xff0000, position: { x: -4, y: 1, z: 0 }, name: "Soleil Rouge" , link: "Explosion.html"},
+        { color: 0xff0000, position: { x: -4, y: 1, z: 0 }, name: "Soleil Rouge" , link: "explosion.html"},
         { color: 0xffa500, position: { x: 1, y: 1, z: 0 }, name: "Soleil Orange", link: "carre.html"},
-        { color: 0xffff00, position: { x: 7, y: 1, z: 0 }, name: "Soleil Jaune", link: "index.html" },
+        { color: 0xffff00, position: { x: 7, y: 1, z: 0 }, name: "Soleil Jaune", link: "systeme-solaire.html" },
     ];
 
     sunsData.forEach(data => {

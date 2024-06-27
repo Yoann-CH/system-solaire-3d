@@ -27,17 +27,17 @@ let selectedObject = null;
 
 // Chargement des textures
 const textureLoader = new THREE.TextureLoader();
-const sunTexture = textureLoader.load('2k_sun.jpg');
-const mercuryTexture = textureLoader.load('2k_mercury.jpg');
-const venusTexture = textureLoader.load('2k_venus_surface.jpg');
-const earthTexture = textureLoader.load('2k_earth_daymap.jpg');
+const sunTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7VwyE5iw-iGoEvUj9BV5mnCSpmUi-By-42Q&s');
+const mercuryTexture = textureLoader.load('https://cdn.pixabay.com/photo/2022/06/30/02/16/mercury-7292788_1280.jpg');
+const venusTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE7q_NoC49WiU1JYZAZdMEHD5sl_Bli3TiOw&s');
+const earthTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRcsZotWnRDclFnTDRvWMtW5GZb7XNSyQRdw&s');
 const moonTexture = textureLoader.load('2k_moon.jpg');
-const marsTexture = textureLoader.load('2k_mars.jpg');
-const jupiterTexture = textureLoader.load('2k_jupiter.jpg');
-const saturnTexture = textureLoader.load('2k_saturn.jpg');
-const uranusTexture = textureLoader.load('2k_uranus.jpg');
-const neptuneTexture = textureLoader.load('2k_neptune.jpg');
-const ringTexture = textureLoader.load('2k_saturn_ring_alpha.png');
+const marsTexture = textureLoader.load('https://t4.ftcdn.net/jpg/03/38/48/79/360_F_338487951_noDUtHlzxljulqg525A9YZAup9IEpeNS.jpg');
+const jupiterTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm3p6nx7Tq-PtVeyMwFQ60XVbQ2heMBFFbhQ&s');
+const saturnTexture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/1/1e/Solarsystemscope_texture_8k_saturn.jpg');
+const uranusTexture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/9/95/Solarsystemscope_texture_2k_uranus.jpg');
+const neptuneTexture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Solarsystemscope_texture_2k_neptune.jpg/1200px-Solarsystemscope_texture_2k_neptune.jpg');
+const ringTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4GCJXXtHbCtEOkJvcfHJhqiFJp7wj-4yaqQ&s');
 
 // Fonction pour créer des orbites
 function createOrbit(radius) {
