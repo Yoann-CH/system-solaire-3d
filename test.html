@@ -22,28 +22,26 @@
             background: rgba(0, 0, 0, 0.5); /* Ajoute un fond semi-transparent pour améliorer la lisibilité du texte */
             padding: 20px;
             border-radius: 10px;
+            position: relative; /* Needed for the absolute positioning of the rocket canvas */
         }
-        .button {
-            padding: 15px 30px;
-            font-size: 18px;
-            color: #fff;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 5px;
+        #rocketCanvas {
+            position: absolute;
+            bottom: 20px; /* Ensure it's at the bottom with a small margin */
+            right: 20px; /* Move it more to the right */
+            width: 200px; /* Increase the canvas size */
+            height: 200px; /* Increase the canvas size */
             cursor: pointer;
-            text-decoration: none;
+            z-index: 10; /* Ensure it's above other elements */
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="main-title">Il était une fois, dans une galaxie lointaine, très lointaine...</h1>
-        
+        <canvas id="rocketCanvas"></canvas>
     </div>
-    <canvas id="rocketCanvas"></canvas>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="/src/rocket.js"></script>
-    <script src="/src/main.js"></script>
+    <script src="rocket.js"></script>
 </body>
 </html>
