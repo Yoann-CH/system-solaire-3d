@@ -24,6 +24,14 @@ export default defineConfig({
           dest: 'src'
         },
         {
+          src: 'src/*.css',
+          dest: 'src'
+        },
+        {
+          src: 'src/*.js',
+          dest: 'src'
+        },
+        {
           src: 'src/assets/images/*',
           dest: 'assets/images'
         },
