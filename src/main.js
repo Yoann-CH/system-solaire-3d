@@ -234,7 +234,6 @@ const dialogues = [
 
 let currentDialogueIndex = 0;
 
-// Function to show dialogue
 function showDialogue() {
     inDialogue = true; // Début du dialogue
     const dialogueBox = document.getElementById('dialogue');
@@ -244,6 +243,9 @@ function showDialogue() {
     dialogueBox.style.display = 'flex';
     dialogueText.textContent = dialogues[currentDialogueIndex];
     nextDialogueButton.style.display = 'block';
+
+    // Arrêter la musique de fond
+    backgroundMusic.pause();
 
     // Ajout de l'écouteur pour le bouton "Entrer"
     document.addEventListener('keydown', handleKeyDown);
@@ -266,6 +268,11 @@ function nextDialogue() {
         const darthVaderMusic = document.getElementById('darth-vader-music');
         darthVaderMusic.pause();
         darthVaderMusic.currentTime = 0; // Réinitialiser la position de lecture
+
+        // Redémarrer la musique de fond
+        backgroundMusic.play().catch(error => {
+            console.error('Erreur lors du redémarrage de la musique de fond:', error);
+        });
 
         // Montrer le vaisseau de Vader et démarrer son comportement
         loadVaderShip();
@@ -548,38 +555,50 @@ toggleLinesButton.addEventListener('click', () => {
 
 // Musique de fond
 const backgroundMusic = document.getElementById('background-music');
-backgroundMusic.volume = 0.5;
+backgroundMusic.volume = 0.5; // Ajustez le volume si nécessaire
 
-// Ajouter un écouteur pour démarrer la musique lors de la première interaction de l'utilisateur
+// Assurez-vous que la musique est en pause par défaut
+backgroundMusic.pause();
+
+let isPlaying = false; // Drapeau pour suivre l'état de la musique
+
+const musicButton = document.getElementById('toggle-music');
+musicButton.addEventListener('click', () => {
+    if (!isPlaying) {
+        backgroundMusic.play().then(() => {
+            isPlaying = true;
+            musicButton.textContent = 'Musique de fond : on';
+        }).catch(error => {
+            console.error('Erreur lors du démarrage de la musique de fond:', error);
+        });
+    } else {
+        backgroundMusic.pause();
+        isPlaying = false;
+        musicButton.textContent = 'Musique de fond : off';
+    }
+});
+
 let userInteracted = false;
+
 function startMusicOnUserInteraction() {
     if (!userInteracted) {
         userInteracted = true;
-        backgroundMusic.play();
+        if (backgroundMusic.paused) {
+            backgroundMusic.play().then(() => {
+                isPlaying = true;
+                musicButton.textContent = 'Musique de fond : on';
+            }).catch(error => {
+                console.error('Erreur lors du démarrage de la musique de fond:', error);
+            });
+        }
         document.removeEventListener('click', startMusicOnUserInteraction);
         document.removeEventListener('keydown', startMusicOnUserInteraction);
     }
 }
 
+// Ajout des écouteurs d'événements pour l'interaction utilisateur
 document.addEventListener('click', startMusicOnUserInteraction);
 document.addEventListener('keydown', startMusicOnUserInteraction);
-
-const musicButton = document.getElementById('toggle-music');
-musicButton.addEventListener('click', () => {
-    if (backgroundMusic.paused) {
-        backgroundMusic.play();
-        musicButton.textContent = 'Musique de fond : on';
-    } else {
-        backgroundMusic.pause();
-        musicButton.textContent = 'Musique de fond : off';
-    }
-});
-
-const muteButton = document.getElementById('mute-music');
-muteButton.addEventListener('click', () => {
-    backgroundMusic.muted = !backgroundMusic.muted;
-    muteButton.textContent = backgroundMusic.muted ? 'Activer le son' : 'Couper le son';
-});
 
 document.getElementById('launch-space').addEventListener('click', () => {
   startSpaceshipMode();
