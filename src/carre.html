@@ -3,53 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="systeme-solaire.css">
+    <link href="https://fonts.cdnfonts.com/css/star-wars" rel="stylesheet">
     <title>Système Solaire en Three.js</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
-        canvas { display: block; }
-        #info {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-            max-width: 300px;
-            word-wrap: break-word;
-        }
-        #info button {
-            background: #444;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-        #controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        #controls input[type="range"] {
-            width: 100%;
-        }
-        #controls button {
-            background: #444;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            margin-top: 5px;
-        }
-    </style>
+
+<!--    <style>-->
+<!--        body {-->
+<!--            margin: 0;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+<!--        canvas { display: block; }-->
+<!--        #info {-->
+<!--            position: absolute;-->
+<!--            top: 10px;-->
+<!--            left: 10px;-->
+<!--            background: rgba(0, 0, 0, 0.8);-->
+<!--            color: white;-->
+<!--            padding: 10px;-->
+<!--            border-radius: 5px;-->
+<!--            display: none;-->
+<!--            max-width: 300px;-->
+<!--            word-wrap: break-word;-->
+<!--        }-->
+<!--        #info button {-->
+<!--            background: #444;-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            padding: 5px 10px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        #controls {-->
+<!--            position: absolute;-->
+<!--            top: 10px;-->
+<!--            right: 10px;-->
+<!--            background: rgba(0, 0, 0, 0.8);-->
+<!--            color: white;-->
+<!--            padding: 10px;-->
+<!--            border-radius: 5px;-->
+<!--        }-->
+<!--        #controls input[type="range"] {-->
+<!--            width: 100%;-->
+<!--        }-->
+<!--        #controls button {-->
+<!--            background: #444;-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            padding: 5px 10px;-->
+<!--            cursor: pointer;-->
+<!--            margin-top: 5px;-->
+<!--        }-->
+<!--    </style>-->
 </head>
 <body>
 <div id="info">
@@ -58,11 +61,10 @@
     <button id="close-info">Fermer</button>
 </div>
 <div id="controls">
-    <label for="speed">Vitesse d'animation:</label>
     <input type="range" id="speed" name="speed" min="0.000000000000001" max="0.000000000002" step="0.000000000000001" value="0.0000000000001">
     <br>
     <button id="toggle-orbits">Afficher/Masquer les lunes et les anneaux</button>
-    <button id="toggle-music">Musique de fond : On</button>
+    <button id="toggle-music">Musique de fond : on</button>
     <button id="mute-music">Couper le son</button>
     <button id="toggle-lines">Afficher/Masquer les lignes</button>
 </div>
@@ -444,10 +446,10 @@ const ringTexture = textureLoader.load('https://encrypted-tbn0.gstatic.com/image
     musicButton.addEventListener('click', () => {
         if (backgroundMusic.paused) {
             backgroundMusic.play();
-            musicButton.textContent = 'Musique de fond : On';
+            musicButton.textContent = 'Musique de fond : on';
         } else {
             backgroundMusic.pause();
-            musicButton.textContent = 'Musique de fond : Off';
+            musicButton.textContent = 'Musique de fond : off';
         }
     });
 

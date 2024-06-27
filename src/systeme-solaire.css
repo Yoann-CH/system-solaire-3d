@@ -138,6 +138,7 @@ canvas { display: block; }
 }
 
 #speed-label,
+#reset,
 #toggle-orbits,
 #toggle-music,
 #mute-music,

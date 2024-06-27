@@ -332,12 +332,14 @@ toggleLinesButton.addEventListener('click', () => {
     });
 });
 
-const resetButton = document.createElement('button');
-resetButton.textContent = 'Reset';
-resetButton.style.position = 'absolute';
-resetButton.style.top = '10px';
-resetButton.style.left = '10px';
-resetButton.addEventListener('click', () => {
+// const resetButton = document.createElement('button');
+// resetButton.textContent = 'Reset';
+// resetButton.style.position = 'absolute';
+// resetButton.style.top = '10px';
+// resetButton.style.left = '10px';
+console.log(document.getElementById('reset'));
+const resetButton2 = document.getElementById('reset');
+resetButton2.addEventListener('click', () => {
     // Réinitialiser la scène
     while (scene.children.length > 0) {
         scene.remove(scene.children[0]);
@@ -407,15 +409,15 @@ const musicButton = document.getElementById('toggle-music');
 musicButton.addEventListener('click', () => {
     if (backgroundMusic.paused) {
         backgroundMusic.play();
-        musicButton.textContent = 'Musique de fond : On';
+        musicButton.textContent = 'musique de fond : on';
     } else {
         backgroundMusic.pause();
-        musicButton.textContent = 'Musique de fond : Off';
+        musicButton.textContent = 'musique de fond : off';
     }
 });
 
 const muteButton = document.getElementById('mute-music');
 muteButton.addEventListener('click', () => {
     backgroundMusic.muted = !backgroundMusic.muted;
-    muteButton.textContent = backgroundMusic.muted ? 'Activer le son' : 'Couper le son';
+    muteButton.textContent = backgroundMusic.muted ? 'activer le son' : 'couper le son';
 });
