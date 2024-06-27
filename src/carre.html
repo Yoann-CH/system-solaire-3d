@@ -211,18 +211,21 @@
 
     // Charger le modèle GLB
     const loader = new THREE.GLTFLoader();
-    loader.load('halo_ring.glb', function(gltf) {
+    loader.load('/models/halo_ring.glb', function(gltf) {
         const haloRing = gltf.scene;
         haloRing.scale.set(0.05, 0.05, 0.05); // Redimensionner le modèle
         haloRing.position.set(25, 150, 0);
-        haloRing.traverse(function(node) {
-            if (node.isMesh) {
-                node.castShadow = true; // Permet de projeter des ombres
-                node.receiveShadow = true; // Permet de recevoir des ombres
-            }
-        });
-        scene.add(haloRing);
-        celestialBodies.push(haloRing);
+        const userData = { name: "Halo ring", description: "Téléportation !!!" };
+
+    // Ajoutez userData à tous les enfants de Halo Ring
+    haloRing.traverse(function(child) {
+        if (child.isMesh) {
+            child.userData = userData;
+            celestialBodies.push(child);
+        }
+    });
+
+    scene.add(haloRing);
 
         // Gestion du clic sur le halo ring pour la redirection
         window.addEventListener('click', function(event) {
